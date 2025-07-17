@@ -5,18 +5,43 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
+    [Header("Pause Settings")]
     private bool isPaused = false;
+    public bool isGameOver = false;
+
+    [Header("UI References")]
     public GameObject pauseMenuUI;
     public GameObject settingsMenuUI;
     public GameObject crosshair;
+
+    [Header("Player References")]
     public GameObject player;
     public GameObject wand;
-    public bool isGameOver = false;
+
+    private PlayerMovement playerMovement;
+    private WandControl wandControl;
+    private TeleportController teleportController;
+
+    private void Awake()
+    {
+        // Cache component references
+        if (player != null)
+        {
+            playerMovement = player.GetComponent<PlayerMovement>();
+            teleportController = player.GetComponent<TeleportController>();
+        }
+
+        if (wand != null)
+        {
+            wandControl = wand.GetComponent<WandControl>();
+        }
+    }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !isGameOver)
         {
+            // Don't pause if settings menu is open
             if (settingsMenuUI.activeSelf)
             {
                 return;
@@ -37,27 +62,45 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 0f;
         isPaused = true;
-        player.GetComponent<PlayerMovement>().enabled = false;
-        wand.GetComponent<WandControl>().enabled = false;
+
+        // Disable player controls
+        if (playerMovement != null)
+            playerMovement.enabled = false;
+        if (wandControl != null)
+            wandControl.enabled = false;
+        if (teleportController != null)
+            teleportController.DisableTeleport();
+
+        // Show pause UI
         pauseMenuUI.SetActive(true);
         crosshair.SetActive(false);
 
+        // Show cursor
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
 
-     public void Resume()
-        {
-            Time.timeScale = 1f;
-            isPaused = false;
-            player.GetComponent<PlayerMovement>().enabled = true;
-            wand.GetComponent<WandControl>().enabled = true;
-            pauseMenuUI.SetActive(false);
-            crosshair.SetActive(true);
+    public void Resume()
+    {
+        Time.timeScale = 1f;
+        isPaused = false;
 
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-        }
+        // Re-enable player controls
+        if (playerMovement != null)
+            playerMovement.enabled = true;
+        if (wandControl != null)
+            wandControl.enabled = true;
+        if (teleportController != null)
+            teleportController.EnableTeleport();
+
+        // Hide pause UI
+        pauseMenuUI.SetActive(false);
+        crosshair.SetActive(true);
+
+        // Hide cursor
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 
     public void Exit()
     {
@@ -66,10 +109,8 @@ public class PauseMenu : MonoBehaviour
 
     public void MainMenu()
     {
-        Time.timeScale = 1f; 
+        Time.timeScale = 1f;
         SceneManager.LoadScene("ui main");
-
-
     }
 
     public void Restart()
@@ -77,5 +118,4 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene("Main");
     }
-
 }
