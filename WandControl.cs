@@ -35,7 +35,6 @@ public class WandControl : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            // Trigger wand animation only
             wandAnimator.SetTrigger("Shoot");
         }
     }
@@ -60,7 +59,6 @@ public class WandControl : MonoBehaviour
         }
     }
 
-    //  Call this from Animation Event (on the correct frame)
     public void ShootBullet()
     {
         if (cooldown <= 0)
