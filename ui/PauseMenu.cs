@@ -24,7 +24,6 @@ public class PauseMenu : MonoBehaviour
 
     private void Awake()
     {
-        // Cache component references
         if (player != null)
         {
             playerMovement = player.GetComponent<PlayerMovement>();
@@ -41,7 +40,6 @@ public class PauseMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !isGameOver)
         {
-            // Don't pause if settings menu is open
             if (settingsMenuUI.activeSelf)
             {
                 return;
@@ -63,7 +61,6 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0f;
         isPaused = true;
 
-        // Disable player controls
         if (playerMovement != null)
             playerMovement.enabled = false;
         if (wandControl != null)
@@ -71,11 +68,9 @@ public class PauseMenu : MonoBehaviour
         if (teleportController != null)
             teleportController.DisableTeleport();
 
-        // Show pause UI
         pauseMenuUI.SetActive(true);
         crosshair.SetActive(false);
 
-        // Show cursor
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
@@ -85,7 +80,6 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
 
-        // Re-enable player controls
         if (playerMovement != null)
             playerMovement.enabled = true;
         if (wandControl != null)
@@ -93,11 +87,9 @@ public class PauseMenu : MonoBehaviour
         if (teleportController != null)
             teleportController.EnableTeleport();
 
-        // Hide pause UI
         pauseMenuUI.SetActive(false);
         crosshair.SetActive(true);
 
-        // Hide cursor
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }

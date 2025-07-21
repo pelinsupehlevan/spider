@@ -25,5 +25,22 @@ public class EnterLevel : MonoBehaviour
        
     }
 
+    public void OnPlayerTeleportThrough(GameObject player)
+    {
+        if (player.CompareTag("Player"))
+        {
+            if (isEnter)
+            {
+                levelManager.playerEnteredLevel = true;
+            }
+            else
+            {
+                levelManager.playerExitedLevel = true;
+            }
+
+        }
+    }
+
+
 
 }

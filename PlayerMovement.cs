@@ -13,10 +13,10 @@ public class PlayerMovement : MonoBehaviour
     public Transform cameraHolder;
 
     [Header("Jump and Gravity Settings")]
-    public float gravity = -50f;                 // Stronger gravity for fast fall
-    public float jumpHeight = 6f;                // Jump height
-    public float fallMultiplier = 2.5f;          // Faster falling
-    public float lowJumpMultiplier = 5f;         // Shorter jump if releasing jump early
+    public float gravity = -50f;
+    public float jumpHeight = 6f;
+    public float fallMultiplier = 2.5f;
+    public float lowJumpMultiplier = 5f;
 
     private Vector3 velocity;
     private bool isGrounded;
